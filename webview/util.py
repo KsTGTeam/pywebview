@@ -242,3 +242,24 @@ def interop_dll_path(dll_name):
 
     raise Exception('Cannot find %s' % dll_name)
 
+class Process(object):
+    exec_ = None
+    alive = True
+    windows = None
+
+    def join(self, timeout=None):
+        if timeout:
+            from time import sleep
+            sleep(timeout)
+            self.kill()
+        else:
+            if self.exec_:
+                self.exec_()
+            
+    def is_alive(self):
+        return self.alive
+    
+    def close(self):
+        for i in self.windows:
+            i.destroy()
+        self.alive = False

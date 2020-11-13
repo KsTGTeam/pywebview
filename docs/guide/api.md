@@ -52,6 +52,7 @@ Start a GUI loop and display previously created windows. This function must be c
 * `user_agent` - change user agent string. Not supported in EdgeHTML.
 * `block` - If `False` stops freezing main thread. default is `True`
 
+
 ### Examples
 * [Simple window](/examples/open_url.html)
 * [Multi-window](/examples/multiple_windows.html)
