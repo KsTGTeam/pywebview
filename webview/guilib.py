@@ -2,6 +2,7 @@ import logging
 import os
 import platform
 
+from webview import _multiprocessing
 from webview.util import WebViewException
 
 logger = logging.getLogger('pywebview')
@@ -13,7 +14,10 @@ def initialize(forced_gui=None):
         global guilib
 
         try:
-            import webview.platforms.gtk as guilib
+            if _multiprocessing:
+                import webview.platforms.mp_gtk as guilib
+            else:
+                import webview.platforms.gtk as guilib
             logger.debug('Using GTK')
 
             return True
@@ -37,7 +41,10 @@ def initialize(forced_gui=None):
         global guilib
 
         try:
-            import webview.platforms.cocoa as guilib
+            if _multiprocessing:
+                import webview.platforms.mp_cocoa as guilib
+            else:
+                import webview.platforms.cocoa as guilib
 
             return True
         except ImportError:
@@ -70,7 +77,7 @@ def initialize(forced_gui=None):
         forced_gui = 'qt' if 'KDE_FULL_SESSION' in os.environ else None
         forced_gui = os.environ['PYWEBVIEW_GUI'].lower() \
             if 'PYWEBVIEW_GUI' in os.environ and os.environ['PYWEBVIEW_GUI'].lower() in ['qt', 'gtk', 'cef', 'mshtml', 'edgechromium', 'edgehtml'] \
-            else None
+            else forced_gui
 
     forced_gui_ = forced_gui
 
